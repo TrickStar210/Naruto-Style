@@ -1,28 +1,39 @@
-const dvdLogo = document.getElementById('dvdLogo');
-const container = document.getElementById('container');
+// Selecting the DVD logo element
+const dvdLogo = document.getElementById('dvd-logo');
 
-let x = Math.random() * (container.offsetWidth - dvdLogo.offsetWidth);
-let y = Math.random() * (container.offsetHeight - dvdLogo.offsetHeight);
-let xSpeed = 2;
-let ySpeed = 2;
+// Starting position and speed for movement
+let posX = 0;
+let posY = 0;
+let speedX = 2;  // Speed along X-axis
+let speedY = 2;  // Speed along Y-axis
 
-function updatePosition() {
-    x += xSpeed;
-    y += ySpeed;
+// Getting the container size (the window in this case)
+const containerWidth = window.innerWidth - dvdLogo.clientWidth;
+const containerHeight = window.innerHeight - dvdLogo.clientHeight;
 
-    // Bounce off the sides
-    if (x <= 0 || x + dvdLogo.offsetWidth >= container.offsetWidth) {
-        xSpeed = -xSpeed;
-    }
-    if (y <= 0 || y + dvdLogo.offsetHeight >= container.offsetHeight) {
-        ySpeed = -ySpeed;
-    }
+// Function to move the DVD logo
+function moveLogo() {
+  // Update the position
+  posX += speedX;
+  posY += speedY;
 
-    dvdLogo.style.left = x + 'px';
-    dvdLogo.style.top = y + 'px';
-    
-    requestAnimationFrame(updatePosition);
+  // Reverse direction when hitting the screen edges (X-axis)
+  if (posX <= 0 || posX >= containerWidth) {
+    speedX = -speedX; // Reverse direction
+  }
+
+  // Reverse direction when hitting the screen edges (Y-axis)
+  if (posY <= 0 || posY >= containerHeight) {
+    speedY = -speedY; // Reverse direction
+  }
+
+  // Apply the new position to the DVD logo
+  dvdLogo.style.left = posX + 'px';
+  dvdLogo.style.top = posY + 'px';
+
+  // Keep moving the logo by calling moveLogo repeatedly
+  requestAnimationFrame(moveLogo);
 }
 
 // Start the animation
-updatePosition();
+moveLogo();
